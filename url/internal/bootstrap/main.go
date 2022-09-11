@@ -1,17 +1,21 @@
 package bootstrap
 
 import (
-	"github.com/Pauloo27/shurl/url/internal/logger"
 	"github.com/Pauloo27/shurl/url/internal/server"
+	"go.uber.org/zap"
 )
 
-func handleFatal(err error) {
+func handleFatal(logger *zap.SugaredLogger, err error) {
 	if err != nil {
-		logger.L.Fatal(err)
+		logger.Fatal(err)
 	}
 }
 
 func Start() {
-	logger.L.Info("Starting URL service...")
-	handleFatal(server.Start())
+	logger, _ := zap.NewProduction()
+	defer logger.Sync() // flushes buffer, if any
+	sugar := logger.Sugar()
+
+	sugar.Info("Starting URL service...")
+	handleFatal(sugar, server.Start(sugar))
 }
