@@ -14,8 +14,14 @@ func handleFatal(logger *zap.SugaredLogger, err error) {
 func Start() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync() // flushes buffer, if any
+
 	sugar := logger.Sugar()
 
 	sugar.Info("Starting URL service...")
-	handleFatal(sugar, server.Start(sugar))
+
+	sugar.Infof("Loading configuration from file %s...", ConfigFileName)
+	config, err := LoadConfig()
+	handleFatal(sugar, err)
+
+	handleFatal(sugar, server.Start(sugar, config))
 }

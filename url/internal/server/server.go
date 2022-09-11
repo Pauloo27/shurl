@@ -1,15 +1,17 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/Pauloo27/shurl/url/internal/service"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"go.uber.org/zap"
 )
 
-func Start(logger *zap.SugaredLogger) error {
-	logger.Info("Starting HTTP server...")
+func Start(logger *zap.SugaredLogger, service *service.URLService) error {
+	logger.Infof("Starting HTTP server at port %d...", service.Http.Port)
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -21,5 +23,5 @@ func Start(logger *zap.SugaredLogger) error {
 		w.Write([]byte("welcome"))
 	})
 
-	return http.ListenAndServe(":3000", r)
+	return http.ListenAndServe(fmt.Sprintf(":%d", service.Http.Port), r)
 }
