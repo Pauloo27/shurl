@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// https://github.com/igknot/chi-zap-ecs-logger
+// middleware based on https://github.com/igknot/chi-zap-ecs-logger
 
 type chilogger struct {
 	logZ *zap.SugaredLogger
