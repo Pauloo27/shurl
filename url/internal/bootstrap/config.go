@@ -11,8 +11,8 @@ const (
 	ConfigFileName = "url-config.json"
 )
 
-func LoadConfig() (*service.URLService, error) {
-	var config service.URLService
+func LoadConfig() (*service.Config, error) {
+	var config service.Config
 	file, err := os.ReadFile(ConfigFileName)
 	if err != nil {
 		return nil, err

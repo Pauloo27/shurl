@@ -1,14 +1,15 @@
 package service
 
+import "database/sql"
+
 type URLService struct {
-	Http struct {
-		Port int `json:"port"`
-	} `json:"http"`
-	PG struct {
-		Host     string `json:"host"`
-		Port     int    `json:"port"`
-		Username string `json:"username"`
-		Password string `json:"password"`
-		Database string `json:"database"`
-	} `json:"pg"`
+	Config
+	DB *sql.DB
+}
+
+func NewService(config *Config, db *sql.DB) *URLService {
+	return &URLService{
+		Config: *config,
+		DB:     db,
+	}
 }

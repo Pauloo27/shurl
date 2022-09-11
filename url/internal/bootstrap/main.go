@@ -1,7 +1,9 @@
 package bootstrap
 
 import (
+	"github.com/Pauloo27/shurl/url/internal/db"
 	"github.com/Pauloo27/shurl/url/internal/server"
+	"github.com/Pauloo27/shurl/url/internal/service"
 	"go.uber.org/zap"
 )
 
@@ -23,5 +25,14 @@ func Start() {
 	config, err := LoadConfig()
 	handleFatal(sugar, err)
 
-	handleFatal(sugar, server.Start(sugar, config))
+	sugar.Info("Connecting to Postgres...")
+	db, err := db.Connect(config)
+	handleFatal(sugar, err)
+
+	err = db.Ping()
+	handleFatal(sugar, err)
+
+	service := service.NewService(config, db)
+
+	handleFatal(sugar, server.Start(sugar, service))
 }
