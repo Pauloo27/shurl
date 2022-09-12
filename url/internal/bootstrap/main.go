@@ -26,13 +26,18 @@ func Start() {
 	handleFatal(sugar, err)
 
 	sugar.Info("Connecting to Postgres...")
-	db, err := db.Connect(config)
+	pg, err := db.Connect(config)
 	handleFatal(sugar, err)
 
-	err = db.Ping()
+	err = pg.Ping()
 	handleFatal(sugar, err)
 
-	service := service.NewService(config, db)
+	applied, err := db.Migrate(pg)
+	handleFatal(sugar, err)
+
+	sugar.Infof("Applied %d migrations", applied)
+
+	service := service.NewService(config, pg)
 
 	handleFatal(sugar, server.Start(sugar, service))
 }
