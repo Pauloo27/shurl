@@ -42,11 +42,12 @@ func RouteRedirect(logger *zap.SugaredLogger) http.Handler {
 		}
 		defer res.Close()
 
-		var longURL string
 		if !res.Next() {
 			http.NotFound(w, r)
 			return
 		}
+
+		var longURL string
 		err = res.Scan(&longURL)
 		if err != nil {
 			http.Error(w, GenericDatabaseError, http.StatusInternalServerError)
