@@ -28,6 +28,7 @@ func RouteRedirect(logger *zap.SugaredLogger) http.Handler {
 
 		if path == "" {
 			http.Redirect(w, r, "/_/version", http.StatusTemporaryRedirect)
+			return
 		}
 
 		db := r.Context().Value(middlewares.DBCtxKey).(*sql.DB)
