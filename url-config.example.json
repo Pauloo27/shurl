@@ -1,0 +1,12 @@
+{
+  "http": {
+    "port": 8080
+  },
+  "pg": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "shurl",
+    "user": "postgres",
+    "password": "password"
+  }
+}
