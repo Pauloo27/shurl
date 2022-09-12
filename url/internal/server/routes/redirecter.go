@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"database/sql"
 	"errors"
 	"net/http"
 	"net/url"
 	"strings"
 
 	"github.com/Pauloo27/shurl/url/internal/server/middlewares"
+	"github.com/Pauloo27/shurl/url/internal/service"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 )
@@ -31,7 +31,8 @@ func RouteRedirect(logger *zap.SugaredLogger) http.Handler {
 			return
 		}
 
-		db := r.Context().Value(middlewares.DBCtxKey).(*sql.DB)
+		service := r.Context().Value(middlewares.ServiceCtxKey).(*service.URLService)
+		db := service.DB
 
 		res, err := db.Query("SELECT long_url FROM url WHERE path = $1", path)
 		if err != nil {

@@ -20,7 +20,7 @@ func Start(logger *zap.SugaredLogger, service *service.URLService) error {
 	r.Use(middleware.RealIP)
 	r.Use(middlewares.NewZapMiddleware("router", logger))
 	r.Use(middleware.Recoverer)
-	r.Use(middlewares.NewDBCtx(service))
+	r.Use(middlewares.NewServiceCtx(service))
 
 	r.Mount("/_", routes.RouteUnderscore())
 	r.Mount("/", routes.RouteRedirect(logger))
