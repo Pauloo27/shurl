@@ -32,7 +32,7 @@ func RouteRedirect(logger *zap.SugaredLogger) http.Handler {
 
 		db := r.Context().Value(middlewares.DBCtxKey).(*sql.DB)
 
-		res, err := db.Query("SELECT long_url FROM url WHERE short_url = $1", path)
+		res, err := db.Query("SELECT long_url FROM url WHERE path = $1", path)
 		if err != nil {
 			http.Error(w, GenericDatabaseError, http.StatusInternalServerError)
 			logger.Error(err)
